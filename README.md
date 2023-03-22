@@ -1,7 +1,7 @@
 Aufgaben (erstmal nur oberfläche):
-Marco:  Footer, Eventseite(n), Eventanlegen
-Eray:   APP-SCSS, Anmelden- und Registierenseite, Header KB, Linke Leiste KB
-Elias:  Header, Homepage, 
+Marco:  Footer, Eventseite(n), Event anlegen
+Eray:   APP-SCSS, Anmelden- und Registierenseite, Header, (Linke Leiste KB( 
+Elias:  Homepage 
 
 Anmelden- und Registierenseite:
 - Anmeldemaske mit Anmelden und Registrieren
