@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+button {
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
