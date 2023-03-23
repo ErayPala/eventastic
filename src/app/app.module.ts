@@ -14,6 +14,8 @@ import { RegistrierungComponent } from './registrierung/registrierung.component'
 import { AnmeldungComponent } from './anmeldung/anmeldung.component';
 import { HttpClientModule } from "@angular/common/http";
 import { ErstellenComponent } from './erstellen/erstellen.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select'; 
 
 const meineRouten:Routes = [
   {path: '', component: HomepageComponent},
@@ -37,6 +39,8 @@ const meineRouten:Routes = [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatSelectModule,
     RouterModule.forRoot(meineRouten)
   ],
   providers: [],
