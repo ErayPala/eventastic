@@ -13,11 +13,13 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { RegistrierungComponent } from './registrierung/registrierung.component';
 import { AnmeldungComponent } from './anmeldung/anmeldung.component';
 import { HttpClientModule } from "@angular/common/http";
+import { ErstellenComponent } from './erstellen/erstellen.component';
 
 const meineRouten:Routes = [
-  {path: '', component: HeaderComponent},
+  {path: '', component: HomepageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'footer', component: FooterComponent},
+  {path: 'erstellen', component: ErstellenComponent},
 ];
 
 @NgModule({
@@ -28,7 +30,8 @@ const meineRouten:Routes = [
     AccountComponent,
     HomepageComponent,
     RegistrierungComponent,
-    AnmeldungComponent
+    AnmeldungComponent,
+    ErstellenComponent
   ],
   imports: [
     BrowserModule,
