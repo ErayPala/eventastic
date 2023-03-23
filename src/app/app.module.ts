@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { RegistrierungComponent } from './registrierung/registrierung.component';
 import { AnmeldungComponent } from './anmeldung/anmeldung.component';
+import { HttpClientModule } from "@angular/common/http";
 
 const meineRouten:Routes = [
   {path: '', component: HeaderComponent},
