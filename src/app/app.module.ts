@@ -43,6 +43,7 @@ const meineRouten:Routes = [
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatSelectModule,
+    HttpClientModule,
     RouterModule.forRoot(meineRouten)
   ],
   providers: [],
