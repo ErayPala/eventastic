@@ -1,1 +1,31 @@
-<p>Works!</p>
+<div class="anmeldemaske">
+  <h2>Anmeldung</h2>
+  <p>Bitte geben Sie Ihre Loggindaten ein:</p>
+
+<mat-form-field appearance="fill" class="abstand">
+  <mat-label>Vorname</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Nachname</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<div class="example-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hide ? 'password' : 'text'">
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <div>
+    <button routerLink="/account">Anmelden</button>
+  </div>
+
+  <p>Noch kein Konto?</p>
+  <button routerLink="/registrierung">Registrieren</button>
+</div>

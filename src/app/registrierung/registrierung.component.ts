@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./registrierung.component.scss']
 })
 export class RegistrierungComponent {
-
+  //Für das Password
+  hide = true;
 }

@@ -17,13 +17,14 @@ import { FooterComponent } from './footer/footer.component';
 import { ErstellenComponent } from './erstellen/erstellen.component';
 
 //Hier sind alle Module von Angular Material Desgin importiert
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';    
+import { MatRadioModule } from '@angular/material/radio';
 
 const meineRouten:Routes = [
   {path: '', component: HomepageComponent},
@@ -33,6 +34,7 @@ const meineRouten:Routes = [
   {path: 'erstellen', component: ErstellenComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'footer', component: FooterComponent},
+  {path: 'account', component: AccountComponent},
 ];
 
 @NgModule({
@@ -60,7 +62,7 @@ const meineRouten:Routes = [
     MatIconModule,
     MatInputModule,
     MatRadioModule,
-    
+
   ],
   providers: [],
   bootstrap: [AppComponent]
