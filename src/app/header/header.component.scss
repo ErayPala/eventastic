@@ -1,32 +1,53 @@
 header {
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    height: 50px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height: 50px;
+  // display: flex;
   //  justify-content: space-between;
   //  align-items: center;
-  }
-  
+
   .logo {
-    height: 30px;
-    margin-left: 50px;
-    margin-top: 5px;
-  }
-  
-  
-  button {
-    width: 150px;
-    height: 30px;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10%;
-    display: inline-block;
-    right: 0%;
-  
-    &:first-child {
-    margin-right: 5px;
+      height: 30px;
+      margin-left: 45px;
+      margin-top: 5px;
     }
-  
-    &:last-child {
-    right: 0;
+
+  //Für die "Warm" Buttons
+
+    section {
+      display: table;
     }
-  }
+
+    .example-label {
+      display: table-cell;
+      font-size: 14px;
+      margin-left: 8px;
+      min-width: 120px;
+    }
+
+    .example-button-row {
+      display: table-cell;
+      max-width: 600px;
+    }
+
+    .example-button-row .mat-mdc-button-base {
+      margin: 8px 8px 8px 0;
+    }
+
+    .example-flex-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .example-button-container {
+      display: flex;
+      justify-content: center;
+      width: 120px;
+    }
+}
+
+
+
+
+

@@ -1,8 +1,13 @@
 <header>
+  <div>
     <div>
-    <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
-
-    <Button routerLink="/erstellen"> Event erstellen </Button>
-    <Button routerLink="/anmeldung"> Anmelden </Button>
+      <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
     </div>
-  </header>
+    <section>
+      <div class="example-button-row">
+        <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
+        <button routerLink="/anmeldung" mat-raised-button color="warn">Anmelden</button>
+      </div>
+    </section>
+  </div>
+</header>
