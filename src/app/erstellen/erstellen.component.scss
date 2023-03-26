@@ -1,3 +1,31 @@
-.mat-mdc-radio-button ~ .mat-mdc-radio-button {
-  margin-left: 16px;
+.erstellungsmaske {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+
+  .abstand {
+    margin-right: 20px;
+  }
+
+  .example-container mat-form-field+mat-form-field {
+    margin-left: 8px;
+  }
+
+  .example-right-align {
+    text-align: right;
+  }
+
+  input.example-right-align::-webkit-outer-spin-button,
+  input.example-right-align::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  input.example-right-align {
+    -moz-appearance: textfield;
+  }
 }

@@ -25,6 +25,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs'; 
 
 const meineRouten:Routes = [
   {path: '', component: HomepageComponent},
@@ -62,6 +64,8 @@ const meineRouten:Routes = [
     MatIconModule,
     MatInputModule,
     MatRadioModule,
+    MatDatepickerModule,
+    MatTabsModule
 
   ],
   providers: [],

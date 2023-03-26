@@ -1,12 +1,58 @@
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label>Favorite food</mat-label>
-    <input matInput placeholder="Ex. Pizza" value="Sushi">
+<div class="erstellungsmaske">
+  <h1>Event erstellen</h1>
+  <p>Hier können Sie Ihrem geplanten Event alle benötigten Informationen hinzufügen.</p>
+  <h3>Eckdaten</h3>
+
+  <mat-form-field appearance="fill" class="abstand">
+    <mat-label>Eventtitel</mat-label>
+    <input matInput>
   </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-label>Leave a comment</mat-label>
-    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+  <mat-form-field appearance="fill" >
+    <mat-label>Veranstalter</mat-label>
+    <mat-select>
+      <mat-option value="one">Elias Hoh</mat-option>
+      <mat-option value="two">Eray Pala</mat-option>
+      <mat-option value="two">Marco Kröker</mat-option>
+    </mat-select>
   </mat-form-field>
-</form>
+
+  <mat-form-field appearance="fill" class="abstand">
+    <mat-label>Typ</mat-label>
+    <mat-select>
+      <mat-option value="one">Konferenz</mat-option>
+      <mat-option value="two">Seminar</mat-option>
+      <mat-option value="two">Tagung</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" >
+    <mat-label>Kategorie</mat-label>
+    <mat-select>
+      <mat-option value="one">Familie und Bildung</mat-option>
+      <mat-option value="two">Geschäftlich und Professionell</mat-option>
+      <mat-option value="two">Regierung und Politik</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
+  <h3>Veranstaltungsort</h3>
+
+  <mat-divider></mat-divider>
+
+  <h3>Datum und Uhrzeit</h3>
+  
+  <p>Geben Sie an, wann genau Ihre Veranstaltung stattfindet.</p>
+  <!--
+  <mat-form-field appearance="fill">
+    <mat-label>Wähle ein Datum aus.</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-hint>Startdatum</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  -->  
+
+  </div>
 
