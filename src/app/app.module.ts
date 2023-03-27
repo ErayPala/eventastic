@@ -15,6 +15,7 @@ import { AnmeldungComponent } from './anmeldung/anmeldung.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ErstellenComponent } from './erstellen/erstellen.component';
+import { EventComponent } from './event/event.component';
 
 //Hier sind alle Module von Angular Material Desgin importiert
 
@@ -26,7 +27,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
+ 
 
 const meineRouten:Routes = [
   {path: '', component: HomepageComponent},
@@ -34,6 +36,7 @@ const meineRouten:Routes = [
   {path: 'registrierung', component: RegistrierungComponent},
   {path: 'anmeldung', component: AnmeldungComponent},
   {path: 'erstellen', component: ErstellenComponent},
+  {path: 'event', component: EventComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'footer', component: FooterComponent},
   {path: 'account', component: AccountComponent},
@@ -48,7 +51,8 @@ const meineRouten:Routes = [
     RegistrierungComponent,
     AnmeldungComponent,
     AccountComponent,
-    ErstellenComponent
+    ErstellenComponent,
+    EventComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,6 @@ const meineRouten:Routes = [
     MatRadioModule,
     MatDatepickerModule,
     MatTabsModule
-
   ],
   providers: [],
   bootstrap: [AppComponent]
