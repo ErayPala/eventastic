@@ -15,7 +15,7 @@ services:
     depends_on:
       - meinecooledb
     # Overwrite to nodemon only for DEV!
-    command: nodemon server.js
+    command: nodemon -L server.js
     # Host mount path overwrite for nodemon - only for DEV!
     volumes:
       # :Z may needs to be removed, if this does not work
