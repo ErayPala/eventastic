@@ -26,8 +26,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
 
+//Hier sind alle unsere Routen innerhalb des Programms
 const meineRouten:Routes = [
   {path: '', component: HomepageComponent},
   {path: 'homepage', component: HomepageComponent},
@@ -65,8 +66,7 @@ const meineRouten:Routes = [
     MatInputModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatTabsModule
-
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
