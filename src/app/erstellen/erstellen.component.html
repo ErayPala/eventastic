@@ -64,16 +64,21 @@
   </mat-form-field>
 -->
  
-  
-  <mat-form-field appearance="fill">
-    <mat-label>Wähle ein Datum aus.</mat-label>
+  <mat-form-field appearance="fill" class="abstand">
+    <mat-label>Startdatum</mat-label>
     <input matInput [matDatepicker]="picker">
-    <mat-hint>Startdatum</mat-hint>
+    <mat-hint></mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
-  
-   
+  <mat-form-field appearance="fill">
+    <mat-label>Enddatum</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-hint></mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
   </div>
 
