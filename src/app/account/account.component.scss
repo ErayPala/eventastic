@@ -3,7 +3,6 @@
   height: 100%;
   width: 200px;
   position: absolute;
-  z-index: 1;
   left: 0;
   background-color: rgba(0, 0, 0, 0.1);
   overflow-x: hidden;
@@ -32,4 +31,5 @@
   font-size: 28px;
   // Text verlängern um scrollen zu können
   padding: 0px 10px;
+  height: 600px;
 }
