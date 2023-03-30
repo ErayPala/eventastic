@@ -1,0 +1,35 @@
+.sidenav {
+  font-family: 'Ubuntu', sans-serif;
+  height: 100%;
+  width: 200px;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+  padding-top: 40px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: rgba(228, 31, 23, 1);
+  display: block;
+
+    cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: #f1f1f1;
+      }
+}
+
+.main {
+  font-family: 'Ubuntu', sans-serif;
+  margin-left: 200px;
+  // Gleicher Absatnd wie die Breite der linken Navbar
+  font-size: 28px;
+  // Text verlängern um scrollen zu können
+  padding: 0px 10px;
+}
