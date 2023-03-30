@@ -52,7 +52,7 @@ const meineRouten:Routes = [
     AnmeldungComponent,
     AccountComponent,
     ErstellenComponent,
-    EventComponent
+    EventComponent,
   ],
   imports: [
     BrowserModule,
