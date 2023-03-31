@@ -1,15 +1,15 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     background-color: #f2f2f2;
   }
-  
+
   h1 {
     text-align: center;
     margin-top: 50px;
     font-size: 36px;
     color: #333333;
   }
-  
+
   .event {
     width: 100%;
     max-width: 600px;
@@ -20,26 +20,26 @@ body {
     padding: 20px;
     text-align: center;
   }
-  
+
   .event img {
     width: 100%;
     max-width: 400px;
     height: auto;
     margin-bottom: 20px;
   }
-  
+
   .event h2 {
     font-size: 24px;
     color: #333333;
     margin-bottom: 10px;
   }
-  
+
   .event p {
     font-size: 16px;
     color: #666666;
     margin-bottom: 20px;
   }
-  
+
   .event button {
     background-color: #ff6600;
     border: none;
@@ -50,7 +50,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  
+
   .event button:hover {
  background-color: #ff8000;
   }
