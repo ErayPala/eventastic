@@ -9,4 +9,8 @@ export class LoginService {
   angemeldet = false;
 
   constructor() { }
+
+  checkAnmeldung(angemeldet:boolean){
+    this.angemeldet == angemeldet;
+  }
 }

@@ -3,7 +3,7 @@
     <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
     <section *ngIf="!lg.angemeldet">
       <div class="example-button-row">
-        <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
+        <button *ngIf="lg.angemeldet" routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
         <button routerLink="/anmeldung" mat-raised-button color="warn">Anmelden</button>
         <button routerLink="/registrierung" mat-raised-button color="warn">Registrieren</button>
       </div>

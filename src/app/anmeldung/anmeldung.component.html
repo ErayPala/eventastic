@@ -2,27 +2,31 @@
   <h2>Anmeldung</h2>
   <p>Bitte geben Sie Ihre Loggindaten ein:</p>
 
-<mat-form-field appearance="fill" class="abstand">
-  <mat-label>E-Mail</mat-label>
-  <input matInput>
-</mat-form-field>
+  <form action="/anmeldung" method="post">
 
-<div class="example-container">
-  <mat-form-field appearance="fill">
-    <mat-label>Passwort</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'">
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-  </mat-form-field>
+    <mat-form-field appearance="fill" class="abstand">
+      <mat-label for="user_email">E-Mail</mat-label>
+      <input matInput id="user_email" name="user_email">
+    </mat-form-field>
 
-  <div>
-    <button routerLink="/account" (click)="lg.angemeldet=true">Anmelden</button>
-  </div>
+    <div class="example-container">
+      <mat-form-field appearance="fill">
+        <mat-label for="user_email">Passwort</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" id="user_email" name="user_email">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
 
-  <p>Noch kein Konto?</p>
-  <button routerLink="/registrierung">Registrieren</button>
-</div>
+      <div class="submitButton">
+        <button routerLink="/account" (click)="lg.angemeldet=true">Anmelden</button>
+      </div>
+
+      <p>Noch kein Konto?</p>
+      <button routerLink="/registrierung">Registrieren</button>
+    </div>
+
+  </form>
 </div>
 <app-footer></app-footer>
