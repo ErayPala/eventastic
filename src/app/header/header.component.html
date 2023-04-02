@@ -16,7 +16,7 @@
 
         <mat-menu #menu="matMenu">
           <button routerLink="/account" mat-menu-item>Account</button>
-          <button routerLink="/homepage" mat-menu-item>Auslogen</button>
+          <button routerLink="/homepage" (click)="lg.angemeldet=false" mat-menu-item>Auslogen</button>
         </mat-menu>
 
       </div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-anmeldung',
@@ -10,4 +11,6 @@ import {FormControl, Validators} from '@angular/forms';
 export class AnmeldungComponent {
   //Für das Password
   hide = true;
+
+  constructor(public lg: LoginService) { }
 }
