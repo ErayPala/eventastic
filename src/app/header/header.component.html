@@ -1,7 +1,7 @@
 <header>
   <div>
       <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
-    <section *ngIf="!angemeldet">
+    <section *ngIf="!lg.angemeldet">
       <div class="example-button-row">
         <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
         <button routerLink="/anmeldung" mat-raised-button color="warn">Anmelden</button>
@@ -9,7 +9,7 @@
       </div>
     </section>
 
-    <section *ngIf="angemeldet">
+    <section *ngIf="lg.angemeldet">
       <div class="example-button-row">
         <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
         <button color="warn" mat-button [matMenuTriggerFor]="menu">Platzhalter</button>
