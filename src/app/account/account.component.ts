@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent {
+  showPersoenlicheDaten = true;
+  showMeineEvents = false;
+  showPasswortAendern = false;
 
+  showRegister = [0, 1, 2];
 }

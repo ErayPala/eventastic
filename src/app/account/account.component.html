@@ -1,12 +1,23 @@
 <app-header></app-header>
 <div class="sidenav">
-    <a>Persönliche Daten</a>
-    <a>Meine Events</a>
-    <a>Password ändern</a>
+    <a (click)="showPersoenlicheDaten=true; showMeineEvents=false; showPasswortAendern=false">Persönliche Daten</a>
+    <a (click)="showPersoenlicheDaten=false; showMeineEvents=true; showPasswortAendern=false">Meine Events</a>
+    <a (click)="showPersoenlicheDaten=false; showMeineEvents=false; showPasswortAendern=true">Password ändern</a>
 </div>
 
-<div class="main">
-    <h2>Accpount Komponente</h2>
+<div *ngIf="showPersoenlicheDaten" class="main">
+    <h2>Persölnliche Daten</h2>
     <p>Hier wird der Text für die Register stehen.</p>
 </div>
+
+<div *ngIf="showMeineEvents" class="main">
+  <h2>Meine Events</h2>
+  <p>Hier stehen meine Events!</p>
+</div>
+
+<div *ngIf="showPasswortAendern" class="main">
+  <h2>Passwort ändern</h2>
+  <p>Hier kann man sein Passwort ändern!</p>
+</div>
+
 <app-footer></app-footer>
