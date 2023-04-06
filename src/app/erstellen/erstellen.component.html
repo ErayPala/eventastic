@@ -42,7 +42,27 @@
   <p>Geben Sie an, wo Ihre Veranstaltung stattfindet.</p>
 
   <mat-form-field appearance="fill" class="abstand">
-    <mat-label>Ort</mat-label>
+    <mat-label>Adresse</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Stadt</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="abstand">
+    <mat-label>Bundesland</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>PLZ</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="abstand">
+    <mat-label>Land</mat-label>
     <input matInput>
   </mat-form-field>
 
@@ -62,8 +82,9 @@
     <mat-label>Uhrzeit</mat-label>
     <input matInput>
   </mat-form-field>
--->
- 
+  -->
+  
+  <!--
   <mat-form-field appearance="fill">
     <mat-label>Startdatum</mat-label>
     <input matInput [matDatepicker]="picker">
@@ -71,6 +92,59 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
+  -->
 
+  <p>Eventbeginn</p>
+  <input type="date">
+  <p>Startzeit</p>
+  <input type="time">
+
+  <br>
+
+  <p>Eventende</p>
+  <input type="date">
+  <p>Uhrzeit</p>
+  <input type="time">
+
+  <script>
+  // The addRow()-function will add a row to the table. It will use the "title" and "description" input field. All other fields will be added by the database (see server.js)
+            function addRow() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "",
+                    description: ""
+                }
+                // Load the title and description from the inputfields on this page:
+                data_to_send.title = document.getElementById("title").value;
+                data_to_send.description = document.getElementById("description").value;
+                // send the collected data as JSON
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Successfully added item with title:' + data_to_send.title + '; description: ' + data_to_send.description + ' ; Message from server: ' + this.responseText);
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR on adding new item - message from server: ' + this.responseText);
+                    }
+                    // reload table
+                    loadDoc();
+                };
+
+            }
+          </script>
   </div>
 
