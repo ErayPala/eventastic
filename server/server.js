@@ -155,6 +155,7 @@ app.delete('/database/:id', (req, res) => {
     });
 });
 
+/*
 // POST path for database
 app.post('/database', (req, res) => {
     // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
@@ -187,6 +188,7 @@ app.post('/database', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title" and "description' });
     }
 });
+*/
 // ###################### DATABASE PART END ######################
 
 // POST path for database
