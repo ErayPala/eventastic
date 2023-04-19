@@ -42,6 +42,93 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     }
 });
 
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+
+// Konfiguration Express Session Middleware
+const options = {
+  host: 'database',
+  port: 8085,
+  user: 'exampleuser',
+  password: 'examplepass',
+  database: 'eventastic',
+  clearExpired: true,
+  checkExpirationInterval: 900000, // 15 Minuten
+  expiration: 86400000 // 1 Tag
+};
+
+const sessionStore = new MySQLStore(options);
+
+app.use(session({
+  key: 'session_cookie_name',
+  secret: 'session_cookie_secret',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false
+}));
+
+// LOGIN
+// POST für Login
+app.post('/anmeldung', (req, res) => {
+
+  if (typeof req.body !== "undefined" && typeof req.body.user !== "undefined" && typeof req.body.user_password !== "undefined") {
+
+    var user_email = req.body.user_email;
+    var user_password = req.body.user_password;
+
+    connection.query("SELECT * FROM user WHERE user_email = ?", [user_email], (error, result) => {
+      if (error) {
+
+        // we got an errror - inform the client
+        console.error(error); // <- log error in server
+        res.status(500).json(error); // <- send to client
+        return;
+      }
+
+      // Benutzer vorhanden?
+      if (result.length === 0) {
+        res.status(401).json('Ungültige Email oder Passwort.');
+        return;
+      }
+
+      //Vergleiche Password und HashPassword
+      bcrypt.compare(user_password, result[0].user_password, (error, match) => {
+
+        if (error) {
+
+          // we got an errror - inform the client
+          console.error(error); // <- log error in server
+          res.status(500).json(error); // <- send to client
+          return;
+        }
+
+        if (!match) {
+          res.status(401).json('Ungültige Email oder Passwort.');
+          return;
+        }
+
+        //Benutzer angemeldet
+        req.session.loggedin = true;
+        req.session.user_email = user_email;
+
+        res.redirect("/static/database.html");
+      });
+    });
+  }
+  else {
+    console.error("Client send no correct data!")
+    // Set HTTP Status -> 400 is client error -> and send message
+    res.status(400).json({ message: 'Alle Felder müssen korrekt ausgefüllt werden!' });
+  }
+});
+
+// Überprüfen ob User eingeloggt (Database)
+app.get('/database', (req, res) => {
+  if (!req.session.loggedin) {
+    res.redirect('/login');
+    return;
+  }
+});
 
 // Constants
 const PORT = process.env.PORT || 8080;
