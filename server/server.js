@@ -42,31 +42,6 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     }
 });
 
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
-
-// Konfiguration Express Session Middleware
-const options = {
-  host: 'database',
-  port: 8085,
-  user: 'exampleuser',
-  password: 'examplepass',
-  database: 'eventastic',
-  clearExpired: true,
-  checkExpirationInterval: 900000, // 15 Minuten
-  expiration: 86400000 // 1 Tag
-};
-
-const sessionStore = new MySQLStore(options);
-
-app.use(session({
-  key: 'session_cookie_name',
-  secret: 'session_cookie_secret',
-  store: sessionStore,
-  resave: false,
-  saveUninitialized: false
-}));
-
 // Constants
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
