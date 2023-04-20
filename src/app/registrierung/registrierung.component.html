@@ -1,51 +1,43 @@
-<div class="registrierungmaske">
-  <h2>Registrierung</h2>
-  <p>Bitte geben Sie Ihren Namen ein:</p>
+<form
+ class="registrierung-formular"
+ [formGroup]="RegistrierungForm"
+ (submit)="submit()">
 
-  <mat-form-field appearance="fill" class="abstand">
-    <mat-label>Vorname</mat-label>
-    <input matInput>
-  </mat-form-field>
+  <div class="registrierungmaske">
+    <h2>Registrierung</h2>
+    <p>Bitte geben Sie Ihren Namen ein:</p>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Nachname</mat-label>
-    <input matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" class="abstand">
-    <mat-label>E-Mail</mat-label>
-    <input matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>E-Mail wiederholen </mat-label>
-    <input matInput>
-  </mat-form-field>
-
-  <p>Bitte legen Sie ein Password fest:</p>
-
-  <div class="example-container">
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'">
-      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide">
-        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
+    <mat-form-field appearance="fill" class="abstand">
+      <mat-label>Vorname</mat-label>
+      <input matInput formControlName="vorname" required>
     </mat-form-field>
 
-    <p>Password bitte wiederholen:</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Nachname</mat-label>
+      <input matInput formControlName="nachname" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="abstand">
+      <mat-label>E-Mail</mat-label>
+      <input matInput formControlName="email" required>
+    </mat-form-field>
+
+    <p>Bitte legen Sie ein Password fest:</p>
 
     <div class="example-container">
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
+
     </div>
 
-    <button routerLink="/anmeldung">Registrieren</button>
+    <button mat-raised-button [disabled]="!RegistrierungForm.valid" type="submit"> Registrieren</button>
   </div>
+
+</form>
+<app-footer></app-footer>
