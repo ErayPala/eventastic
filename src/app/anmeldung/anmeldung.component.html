@@ -1,32 +1,32 @@
-<div class="anmeldemaske">
+<form class="anmeldemaske"
+ [formGroup]="AnmeldungForm"
+ (submit)="submit()">
+<div >
   <h2>Anmeldung</h2>
   <p>Bitte geben Sie Ihre Loggindaten ein:</p>
 
-  <form action="/anmeldung" method="post">
-
     <mat-form-field appearance="fill" class="abstand">
       <mat-label for="user_email">E-Mail</mat-label>
-      <input matInput id="user_email" name="user_email">
+      <input matInput formControlName="email">
     </mat-form-field>
 
     <div class="example-container">
       <mat-form-field appearance="fill">
         <mat-label for="user_email">Passwort</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" id="user_email" name="user_email">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
 
-      <div class="submitButton">
-        <button routerLink="/account" (click)="lg.angemeldet=true">Anmelden</button>
-      </div>
+      //Hier fehlt noch was
+      <button mat-raised-button type="submit"> Registrieren</button>
 
       <p>Noch kein Konto?</p>
       <button routerLink="/registrierung">Registrieren</button>
     </div>
 
-  </form>
 </div>
+</form>
 <app-footer></app-footer>
