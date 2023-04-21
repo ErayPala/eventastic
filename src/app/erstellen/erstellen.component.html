@@ -1,3 +1,5 @@
+ <form class="erstellung-formular" formGroup="ErstellungForm" (submit)="submit()">
+
 <div class="erstellungsmaske">
   <h1>Event erstellen</h1>
   <p>Hier können Sie Ihrem geplanten Event alle benötigten Informationen hinzufügen.</p>
@@ -5,33 +7,29 @@
 
   <mat-form-field appearance="fill" class="abstand">
     <mat-label>Eventtitel</mat-label>
-    <input matInput id="eventtitel">
+    <input matInput formControlName="eventtitel" required>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" >
+  <mat-form-field appearance="fill">
     <mat-label>Veranstalter</mat-label>
-    <mat-select>
-      <mat-option value="one">Elias Hoh</mat-option>
-      <mat-option value="two">Eray Pala</mat-option>
-      <mat-option value="two">Marco Kröker</mat-option>
-    </mat-select>
+    <input matInput formControlName="veranstalter" required>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="abstand">
     <mat-label>Typ</mat-label>
-    <mat-select>
-      <mat-option value="one">Konferenz</mat-option>
-      <mat-option value="two">Seminar</mat-option>
-      <mat-option value="two">Tagung</mat-option>
+    <mat-select formControlName="typ" required>
+      <mat-option value="konferenz">Konferenz</mat-option>
+      <mat-option value="seminar">Seminar</mat-option>
+      <mat-option value="tagung">Tagung</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="fill" >
     <mat-label>Kategorie</mat-label>
-    <mat-select>
-      <mat-option value="one">Familie und Bildung</mat-option>
-      <mat-option value="two">Geschäftlich und Professionell</mat-option>
-      <mat-option value="two">Regierung und Politik</mat-option>
+    <mat-select formControlName="kategorie" required>
+      <mat-option value="familie">Familie und Bildung</mat-option>
+      <mat-option value="geschäftlich">Geschäftlich und Professionell</mat-option>
+      <mat-option value="regierung">Regierung und Politik</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -43,27 +41,27 @@
 
   <mat-form-field appearance="fill" class="abstand">
     <mat-label>Adresse</mat-label>
-    <input matInput>
+    <input matInput formControlName="adresse" required>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Stadt</mat-label>
-    <input matInput>
+    <input matInput formControlName="stadt" required>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="abstand">
     <mat-label>Bundesland</mat-label>
-    <input matInput>
+    <input matInput formControlName="bundesland" required>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>PLZ</mat-label>
-    <input matInput>
+    <input matInput formControlName="plz" required>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="abstand">
     <mat-label>Land</mat-label>
-    <input matInput>
+    <input matInput formControlName="land" required>
   </mat-form-field>
 
   <mat-divider></mat-divider>
@@ -72,79 +70,25 @@
   
   <p>Geben Sie an, wann genau Ihre Veranstaltung stattfindet.</p>
 
-  <!--
-  <mat-form-field appearance="fill" class="abstand">
-    <mat-label>Datum</mat-label>
-    <input matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Uhrzeit</mat-label>
-    <input matInput>
-  </mat-form-field>
-  -->
-  
-  <!--
-  <mat-form-field appearance="fill">
-    <mat-label>Startdatum</mat-label>
-    <input matInput [matDatepicker]="picker">
-    <mat-hint></mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  -->
-
   <p>Eventbeginn</p>
-  <input type="date">
+  <input type="date" formControlName="eventbeginn" required>
   <p>Startzeit</p>
-  <input type="time">
+  <input type="time" formControlName="startzeit" required>
 
   <br>
 
   <p>Eventende</p>
-  <input type="date">
+  <input type="date" formControlName="eventende" required>
   <p>Uhrzeit</p>
-  <input type="time">
+  <input type="time" formControlName="uhrzeit" required>
 
-  <script>
-  // The addRow()-function will add a row to the table. It will use the "title" and "description" input field. All other fields will be added by the database (see server.js)
-            function addRow() {
-                // construct an HTTP request
-                var xhr = new XMLHttpRequest();
-                // define the type POST to the url "../database" - we are in 'static/database'
-                xhr.open("POST", "../database", true);
-                // define that the content will be JSON (serialization)
-                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-                // prepare the structure of the message
-                var data_to_send = {
-                    title: "",
-                    description: ""
-                }
-                // Load the title and description from the inputfields on this page:
-                data_to_send.title = document.getElementById("title").value;
-                data_to_send.description = document.getElementById("description").value;
-                // send the collected data as JSON
-                xhr.send(JSON.stringify(data_to_send));
+  <button
+  mat-raised-button
+  type="submit"
+  >Erstellen
+</button>
 
-                // Handle the answer from the server:
-                xhr.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        // Parse the JSON answer from the server:
-                        var answer = JSON.parse(this.responseText);
-                        // Show success message:
-                        showSuccessAlert('Successfully added item with title:' + data_to_send.title + '; description: ' + data_to_send.description + ' ; Message from server: ' + this.responseText);
-                    } else if (this.readyState == 4 && this.status == 500) {
-                        // We got an error:
-                        var error = JSON.parse(this.responseText);
-                        console.log("ERROR: ", error);
-                        // Show error alert:
-                        showErrorAlert('ERROR on adding new item - message from server: ' + this.responseText);
-                    }
-                    // reload table
-                    loadDoc();
-                };
-
-            }
-          </script>
   </div>
+</form>
 
+<!-- <p>[disabled]="!ErstellungForm.valid"</p> -->
