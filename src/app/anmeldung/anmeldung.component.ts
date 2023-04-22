@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+const baseUrl = "http://localhost:8080/"
+
 @Component({
   selector: 'app-anmeldung',
   templateUrl: './anmeldung.component.html',

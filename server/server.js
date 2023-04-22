@@ -6,6 +6,7 @@ const express = require('express');
 const mysql = require('mysql');
 
 const cors = require('cors');
+
 // Database connection info - used from environment variables
 var dbInfo = {
     connectionLimit : 10,
@@ -69,7 +70,7 @@ app.get('/api/test', (req, res) => {
 
 app.post('/api/erstellen', (req, res) => {
 
-    console.log('Erfolgreiche Server-Coonect oin'); // <- log results in console
+    console.log('Erfolgreiche Server-Connection'); // <- log results in console
 
     // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
     // it will be added to the database with a query.

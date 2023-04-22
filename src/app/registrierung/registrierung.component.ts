@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+const baseUrl = "http://localhost:8080/"
+
 @Component({
   selector: 'app-registrierung',
   templateUrl: './registrierung.component.html',
