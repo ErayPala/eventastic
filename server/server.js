@@ -1,11 +1,9 @@
 'use strict';
 
 const express = require('express');
-
-// Database
 const mysql = require('mysql');
-
 const cors = require('cors');
+const bodyparser = require('body-parser');
 
 // Database connection info - used from environment variables
 var dbInfo = {
@@ -54,6 +52,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+
 app.get('/api/test', (req, res) => {
 
     connection.query("SELECT * FROM `events`", function (error, results, fields) {
@@ -67,6 +66,7 @@ app.get('/api/test', (req, res) => {
         }
     });
 });
+
 
 app.post('/api/erstellen', (req, res) => {
 
