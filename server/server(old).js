@@ -186,6 +186,7 @@ app.post('/database', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title" and "description' });
     }
 });
+
 // ###################### DATABASE PART END ######################
 
 // All requests to /static/... will be redirected to static files in the folder "public"
