@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
+import { ReactiveFormsModule } from '@angular/forms';
 
 //Hier sind alle von uns erstellten Komponenten durch ng g c ...
 import { AccountComponent } from './account/account.component';
@@ -72,7 +73,8 @@ const meineRouten:Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

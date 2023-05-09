@@ -3,8 +3,6 @@
 // Initialization of express components
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const mysql = require('mysql');
 const cors = require('cors');
 
@@ -18,9 +16,9 @@ var dbInfo = {
 };
 
 var connection = mysql.createPool(dbInfo);
-const sessionStore = new MySQLStore({}, conn);
 console.log("Conecting to database...");
 
+/*
 // Check the connection
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
@@ -34,6 +32,7 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         process.exit(5); // <- exit application with error code e.g. 5
     }
 });
+*/
 
 // Constants
 const PORT = process.env.PORT || 8080;
@@ -44,17 +43,6 @@ const app = express();
 // Features for JSON Body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Session-Konfiguration
-app.use(session({
-    secret: 'geheimes_geheimnis',
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore
-    }));
-
-// JWT-Konfiguration
-const jwtSecret = 'geheimes_jwt_geheimnis';   
 
 const corsOptions = {
     origin: 'http://localhost:4200',
@@ -67,9 +55,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Just an get-API for testing
-app.get('/api/test', (req, res) => {
+app.get('/api/getEvents', (req, res) => {
 
-    connection.query("SELECT * FROM `events`", function (error, results, fields) {
+    connection.query("SELECT * FROM `events` LIMIT 1", function (error, results, fields) {
 
         if (error) {
             console.error(error);
@@ -98,37 +86,36 @@ app.get('/api/teilnehmer', (req, res) => {
     });
 
 //post-API for posting the input from the registrieren.component into the database to register a new user
-app.post('/api/registrieren', (req, res) => {
+app.post('/api/registrierung', (req, res) => {
+    if (typeof req.body !== "undefined" && typeof req.body.vorname !== "undefined" && typeof req.body.nachname !== "undefined" && typeof req.body.email !== "undefined" 
+    && typeof req.body.password !== "undefined") {
+        
+        //I think here must be checked, if the email-standard was typed in correctly...
 
-if (typeof req.body !== "undefined" && typeof req.body.vorname !== "undefined" && typeof req.body.nachname !== "undefined" && typeof req.body.email !== "undefined" 
-&& typeof req.body.password !== "undefined" && typeof req.body.adresse !== "undefined") {
+        var vorname = req.body.vorname;
+        var nachname = req.body.nachname;
+        var email = req.body.email;
+        var password = req.body.password;
+
+        //And here we think must be checked, if the password was typed in correctly...
+        //And here we think must be some kind of technology like bycrypt or jwt be implemented...
     
-    //I think here must be checked, if the email-standard was typed in correctly...
-
-    var vorname = req.body.vorname;
-    var nachname = req.body.nachname;
-    var email = req.body.email;
-    var password = req.body.password;
-
-    //And here we think must be checked, if the password was typed in correctly...
-    //And here we think must be some kind of technology like bycrypt or jwt be implemented...
-   
-    console.log("Client send database insert request with 'eventtitel': " + eventtitel + " ; veranstalter: " + veranstalter);
-    
-    connection.query("INSERT INTO `events` (`user_id`, `user_vorname`, `user_nachname`, `user_email`, `user_passwort`) VALUES (NULL, '" + vorname + "', '" + nachname + "', '" + email + "', '" + password + "');", function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(500).json(error);
-        } else {
-            console.log('Success answer: ', results);
-            res.status(200).json(results);
-        }
-    });
-}
-else {
-    console.error("Client send no correct data!")
-    res.status(400).json({ message: 'Alle Felder müssen korrekt ausgefüllt werden!' });
-}
+        console.log("Client send database insert request with 'eventtitel': ; veranstalter: ");
+        
+        connection.query("INSERT INTO `user` (`user_id`, `user_vorname`, `user_nachname`, `user_email`, `user_passwort`) VALUES (NULL, '" + vorname + "', '" + nachname + "', '" + email + "', '" + password + "');", function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(500).json(error);
+            } else {
+                console.log('Success answer: ', results);
+                res.status(200).json(results);
+            }
+        });
+    }
+    else {
+        console.error("Client send no correct data!")
+        res.status(400).json({ message: 'Alle Felder müssen korrekt ausgefüllt werden!' });
+    }
 });
 
 
@@ -208,9 +195,9 @@ connection.query("SELECT `user_id`,`user_email`,`user_passwort` FROM `user` WHER
             if (res_email.length > 0) {
                 console.log("res_email.length = " + res_email.length)
                 console.log("Die eingegebene Mial wurde in der Datenbank gefunden.")
-                console.log("Email in DB = " + res_email[0].email)
+                console.log("Email in DB = " + res_email[0].user_email)
 
-                bycrypt.compare(req.body.passwort, res_email[0].passwort, function (err, compare_result){
+               /*  bycrypt.compare(req.body.passwort, res_email[0].passwort, function (err, compare_result){
                     console.log("res_email[0].passwort = " + res_email[0].passwort)
                     console.log("Eingegebenes Passwort = " + req.body.passwort)
                     console.log("compare_result = " + compare_result)
@@ -230,7 +217,12 @@ connection.query("SELECT `user_id`,`user_email`,`user_passwort` FROM `user` WHER
                     if (pw_correct == false) {
                         res.status(400).json({ message: "Falsches Passwort oder falsche E-Mail!"})
                     }
-                })
+                }) */
+                if (req.body.password == res_email[0].user_passwort) {
+                    res.status(200).json("Login erfolgreich!");
+                } else {
+                    res.status(400).json({ message: "Falsches Passwort oder falsche E-Mail!"})
+                }
             }
         }
     }
@@ -243,10 +235,7 @@ app.post('/api/erstellen', (req, res) => {
 
     // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
     // it will be added to the database with a query.
-    if (typeof req.body !== "undefined" && typeof req.body.eventtitel !== "undefined" && typeof req.body.veranstalter !== "undefined" && typeof req.body.typ !== "undefined" 
-    && typeof req.body.kategorie !== "undefined" && typeof req.body.adresse !== "undefined" && typeof req.body.stadt !== "undefined" && typeof req.body.bundesland !== "undefined"
-    && typeof req.body.plz !== "undefined" && typeof req.body.land !== "undefined" && typeof req.body.startdatum !== "undefined" && typeof req.body.enddatum !== "undefined" 
-    && typeof req.body.startzeit !== "undefined" && typeof req.body.endzeit !== "undefined") {
+    if (typeof req.body !== "undefined") {
         // The content looks good, so move on
         // Get the content to local variables:
         var eventtitel = req.body.eventtitel;
@@ -261,11 +250,11 @@ app.post('/api/erstellen', (req, res) => {
         var startdatum = req.body.eventbeginn;
         var enddatum = req.body.eventende;
         var startzeit = req.body.startzeit;
-        var endzeit = req.body.uhrzeit;
-        console.log("Client send database insert request with 'eventtitel': " + eventtitel + " ; veranstalter: " + veranstalter); // <- log to server
+        var endzeit = req.body.endzeit;
+        console.log("Client send database insert request with 'eventtitel':"); // <- log to server
         // Actual executing the query. Please keep in mind that this is for learning and education.
         // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "' current_timestamp());", function (error, results, fields) {
+        connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "', current_timestamp());", function (error, results, fields) {
             if (error) {
                 // we got an error - inform the client
                 console.error(error); // <- log error in server

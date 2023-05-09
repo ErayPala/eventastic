@@ -5,8 +5,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
-const baseUrl = "http://localhost:8080/"
-
 @Component({
     selector: 'app-erstellen',
     templateUrl: './erstellen.component.html',
@@ -22,9 +20,6 @@ export class ErstellenComponent implements OnInit {
     serverAntwort: any
 
     ngOnInit() {
-        this.http.get<any[]>('http://localhost:8080/api/test').subscribe(data => {
-            console.log(data)
-        })
         this.ErstellungForm = new FormGroup(
             {
                 eventtitel: new FormControl('', [Validators.required]),
@@ -37,9 +32,9 @@ export class ErstellenComponent implements OnInit {
                 plz: new FormControl('', [Validators.required]),
                 land: new FormControl('', [Validators.required]),
                 eventbeginn: new FormControl('', [Validators.required]),
-                startzeit: new FormControl('', [Validators.required]),
                 eventende: new FormControl('', [Validators.required]),
-                uhrzeit: new FormControl('', [Validators.required]),
+                startzeit: new FormControl('', [Validators.required]),
+                endzeit: new FormControl('', [Validators.required]),
             }
         )
     }
@@ -49,9 +44,10 @@ export class ErstellenComponent implements OnInit {
         console.log('Submit Funzt')
 
         const headers = { 'content-type': 'application/json' }
-        const body = JSON.stringify(this.ErstellungForm.getRawValue);
+        const body = JSON.stringify(this.ErstellungForm.getRawValue());
         // const body = JSON.stringify({message: "Digga"});
         console.log(this.ErstellungForm);
+        console.log(body);
         this.http.post('http://localhost:8080/api/erstellen', body, { headers: headers }).subscribe((response) => {
             console.log(response);
             this.serverAntwort = response;
