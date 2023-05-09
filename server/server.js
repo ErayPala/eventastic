@@ -1,5 +1,6 @@
 'use strict';
 
+// Initialization of express components
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -52,7 +53,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
+// Just an get-API for testing
 app.get('/api/test', (req, res) => {
 
     connection.query("SELECT * FROM `events`", function (error, results, fields) {
@@ -68,9 +69,27 @@ app.get('/api/test', (req, res) => {
 });
 
 
-app.post('/api/erstellen', (req, res) => {
+//post-API for posting the input from the registrieren.component into the database to register a new user
+//...
 
-    console.log('Erfolgreiche Server-Connection'); // <- log results in console
+
+//get-API for checking, if there is a user with the correct data, which was typed in on anmeldung.component
+//...
+
+
+//API to see, which user is participating on the event
+//...
+
+
+//post-API for posting a user which is participating on an certain event, after he/her clicked a button accept an event
+//...
+
+
+//delete-API to delete a user from an event, after he/her clicked a button to cancel his/her participation
+
+
+//post-API for posting the input data from the erstellen.component into the database
+app.post('/api/erstellen', (req, res) => {
 
     // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
     // it will be added to the database with a query.
@@ -98,7 +117,7 @@ app.post('/api/erstellen', (req, res) => {
         // In real production environment, this has to be secure for SQL injection!
         connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "' current_timestamp());", function (error, results, fields) {
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -116,6 +135,33 @@ app.post('/api/erstellen', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title" and "description' });
     }
 });
+
+
+//delete-API for deleting an event from the database
+app.delete('/database/:id', (req, res) => {
+    // This path will delete an entry. For example the path would look like DELETE '/database/5' -> This will delete number 5
+    let id = req.params.id; // <- load the ID from the path
+    console.log("Request to delete Item: " + id); // <- log for debugging
+
+    // Actual executing the query to delete it from the server
+    // Please keep in mind to secure this for SQL injection!
+    connection.query("DELETE FROM `events` WHERE `events`.`task_id` = " + id + ";", function (error, results, fields) {
+        if (error) {
+            // we got an errror - inform the client
+            console.error(error); // <- log error in server
+            res.status(500).json(error); // <- send to client
+        } else {
+            // Everything is fine with the query
+            console.log('Success answer: ', results); // <- log results in console
+            // INFO: Here can be some checks of modification of the result
+            res.status(200).json(results); // <- send it to client
+        }
+    });
+});
+
+
+//Optional: Gooogle Maps API for showing, where the event is going to take place
+//...
 
 // Start the actual server
 app.listen(PORT, HOST);

@@ -51,7 +51,6 @@ export class ErstellenComponent implements OnInit {
         const headers = { 'content-type': 'application/json' }
         const body = JSON.stringify(this.ErstellungForm.getRawValue);
         // const body = JSON.stringify({message: "Digga"});
-        console.log('Immerhin des ');
         console.log(this.ErstellungForm);
         this.http.post('http://localhost:8080/api/erstellen', body, { headers: headers }).subscribe((response) => {
             console.log(response);
@@ -60,7 +59,6 @@ export class ErstellenComponent implements OnInit {
         },
             (error) => {
                 console.log(error);
-                console.log('Ist des n Error oder was')
                 this.serverAntwort = error.error.message;
             },
         );
