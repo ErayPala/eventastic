@@ -13,7 +13,7 @@ const baseUrl = "http://localhost:8080/"
 })
 
 export class AnmeldungComponent implements OnInit {
-  //Für das Password
+  //For the password
   hide = true;
 
   AnmeldungForm: FormGroup;
@@ -30,7 +30,7 @@ export class AnmeldungComponent implements OnInit {
       });
   }
 
-  //hier fehlt noch was (token, jwt)
+  //here are still things missing (token, jwt)
   submit(): void {
     const headers = { 'content-type': 'application/json'}
     const body = JSON.stringify(this.AnmeldungForm.getRawValue());
