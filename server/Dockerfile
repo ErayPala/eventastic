@@ -11,6 +11,12 @@ RUN npm install -g nodemon
 
 COPY . .
 
+RUN npm install bycrypt.js
+
+RUN npm install express
+
+RUN ng serve
+
 EXPOSE 8080
 
 # Workaround - wait for db to start about 30 sec.

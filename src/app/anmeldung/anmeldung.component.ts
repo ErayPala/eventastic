@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-const baseUrl = "http://localhost:8080/"
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-anmeldung',
@@ -17,7 +16,7 @@ export class AnmeldungComponent implements OnInit {
 
   AnmeldungForm: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private CookieService: CookieService) { }
 
   serverAntwort: any;
 
@@ -30,13 +29,14 @@ export class AnmeldungComponent implements OnInit {
   }
 
   //here are still things missing (token, jwt)
-  submit(): void {
+  login(): void {
+
     const headers = { 'content-type': 'application/json'}
     const body = JSON.stringify(this.AnmeldungForm.getRawValue());
-    this.http.post(baseUrl + 'api/anmeldung', body, { 'headers': headers }).subscribe((response: any) => {
-    console.log(response);
-     this.serverAntwort = response.message;
-     this.router.navigate(['/anmeldung'], {state: {serverAntwort: this.serverAntwort}});
+    
+      this.http.post('http://localhost:8080/api/anmeldung', body, { 'headers': headers }).subscribe((response: any) => {
+      this.CookieService.set('jwt', response.token, {secure: false});
+      this.router.navigate(['/']);
     },
      (error) => {
       console.log(error);

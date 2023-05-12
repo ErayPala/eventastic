@@ -15,10 +15,13 @@ export class AuthenticateGuardService implements CanActivate {
   ) { }
 
   canActivate(): boolean {
-    if (!this.authenticate.loggedIn) {
+  const token = this.cookieService.get('jwt');
+
+    if (!token) {
       this.router.navigate(['/homepage']);
       return false;
     }
+
     return true;
   }
 }

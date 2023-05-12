@@ -1,4 +1,15 @@
-<app-header></app-header>
+<header>
+  <div>
+    <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
+    <section>
+      <div class="example-button-row">
+        <button routerLink="/anmeldung" mat-raised-button color="warn">Event erstellen</button>
+        <button routerLink="/anmeldung" mat-raised-button color="warn">Anmelden</button>
+        <button routerLink="/registrierung" mat-raised-button color="warn">Registrieren</button>
+      </div>
+    </section>
+  </div>
+</header>
 
 <h1>Willkommen bei Eventastic - Das Tool für tolle Events</h1>
 
@@ -7,34 +18,31 @@
 
 <div class="buttonskategorie">
 
-  <button>Alle</button>
-  <button>Für Sie</button>
-  <button>Online</button>
-  <button>Heute</button>
-  <button>Diese Wochenende</button>
-  <button>Musik</button>
-  <button>Essen und Trinken</button>
-  <button>Wohltätigkeits- und Spendenaktionen</button>
+  <!-- <button mat-raised-button>Alle</button>
+  <button mat-raised-button>Für Sie</button>
+  <button mat-raised-button>Online</button>
+  <button mat-raised-button>Heute</button>
+  <button mat-raised-button>Dieses Wochenende</button>
+  <button mat-raised-button>Musik</button>
+  <button mat-raised-button>Essen und Trinken</button>
+  <button> mat-raised-button>Wohltätigkeits- und Spendenaktionen</button> -->
   
-
 </div>
 
+
 <div class="event">
-    <img src="assets/img/bild1.jpeg" alt="Veranstaltung 1">
     <h2>{{ test[0]['event_titel'] }}</h2>
     <p>Der Veranstalter ist: {{ test[0]['event_veranstalter'] }}, die Kategorie: {{ test[0]['event_kategorie'] }}</p>
     <button>Anmelden</button>
   </div>
   
   <div class="event">
-    <img src="assets/img/bild2.jpg" alt="Veranstaltung 2">
     <h2>Veranstaltung 2</h2>
     <p>Beschreibung der Veranstaltung 2</p>
     <button>Anmelden</button>
   </div>
   
   <div class="event">
-    <img src="assets/img/bild3.jpeg" alt="Veranstaltung 3">
     <h2>Veranstaltung 3</h2>
     <p>Beschreibung der Veranstaltung 3</p>
     <button>Anmelden</button>
