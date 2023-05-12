@@ -1,10 +1,19 @@
 'use strict';
 
-// Initialization of express components
+// Initializations
+// Initilization of express
 const express = require('express');
-const jwt = require('jsonwebtoken');
+// Initialization of Database
 const mysql = require('mysql');
+// Initialization of cors
 const cors = require('cors');
+// Initiialization of jwt and cookie-parser for authentication purpose
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+// Initialization of bycrypt, to hash passwords
+const bycrypt = require('bycryptjs');
+const saltRounds = 10;
+
 
 // Database connection info - used from environment variables
 var dbInfo = {
@@ -18,7 +27,7 @@ var dbInfo = {
 var connection = mysql.createPool(dbInfo);
 console.log("Conecting to database...");
 
-/*
+/* database connection check, from the lecture, not urgently needed here
 // Check the connection
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
@@ -34,16 +43,18 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 });
 */
 
-// Constants
+// Constants for server connection
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 
 // App
 const app = express();
+
 // Features for JSON Body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Cors settings
 const corsOptions = {
     origin: 'http://localhost:4200',
     credentials: true,
@@ -51,10 +62,14 @@ const corsOptions = {
     allowedHeaders: 'Content-Type, Authorization',
     exposedHeaders: 'Authorization'
 };
-
 app.use(cors(corsOptions));
 
-// Just an get-API for testing
+//Initialization a JWT secret key
+const secretKey = 'secret-key';
+
+
+//***API-PART BEGINS***/
+// get-API to get all events from the database and sending it to the client to display it
 app.get('/api/getEvents', (req, res) => {
 
     connection.query("SELECT * FROM `events` LIMIT 1", function (error, results, fields) {
@@ -67,6 +82,164 @@ app.get('/api/getEvents', (req, res) => {
             res.status(200).json(results);
         }
     });
+});
+
+
+//post-API for posting the input from the registrieren.component into the database to register a new user
+app.post('/api/registrierung', (req, res) => {
+    if (typeof req.body !== "undefined") {
+    
+    const vorname = connection.escape(req.body.vorname)
+    const nachname = connection.escape(req.body.nachname)
+    const email = connection.escape(req.body.email)
+    console.log("Escaped req.body.vorname, nachname and email: " + connection.escape(req.body.vorname) + " " + connection.escape(req.body.nachname) + " " + connection.escape(req.body.email))
+
+    connection.query("SELECT `user_vorname`, `user_nachname`, `user_email` FROM `user` WHERE `user_vorname` = " + vorname + "AND `user_nachname` = " + nachname + "OR `user_email` = " + email + ";", function(error, res_duplikatPruefung, fields){
+        if (error) {
+            console.error(error);
+            res.status(500).json(error);
+        } else {
+            if (res_duplikatPruefung.length == 0){
+                console.log("MariaDB found no duplicates of the name and email => the name and email can be used together!")
+
+                var vorname = connection.escape(req.body.vorname);
+                var nachname = connection.escape(req.body.nachname);
+                var email = connection.escape(req.body.email);
+                var passwort = req.body.passwort;
+
+                console.log("Client wants to send DB insert request with vorname: " + vorname + " ; nachname: " + nachname + " ; email: " + email)
+
+                bycrypt.genSalt(saltRounds, function(err, salt){
+                    bycrypt.hash(passwort, salt, function(err, hash){
+                        connection.query("INSERT INTO `user` (`user_id`, `user_vorname`, `user_nachname`, `user_email`, `user_passwort`) VALUES (NULL, '" + vorname + "', '" + nachname + "', '" + email + "', '" + hash, function (error, results, fields){
+                            if (error){
+                                console.error(error);
+                                res.status(500).json(error);
+                            } else {
+                                console.log("Account entry successfully created!")
+                            }
+                        })
+                        
+                    })
+                })
+            } else {
+                if (res_duplikatPruefung > 0){
+                    console.log("Found duplicate! Vorname in DB = " + res_duplikatPruefung[0].user_vorname + ", Vorname from client = " + req.body.vorname)
+                    console.log("Nachname in DB = " + res_duplikatPruefung[0].user_nachname + ", Nachname from client = " + req.body.nachname)
+                    console.log("Email in DB = " + res_duplikatPruefung[0].user_email + ", Email from Client = " + req.body.vorname)
+
+                    if (res_duplikatPruefung[0].user_email == req.body.email){
+                        console.log("Email already taken!")
+                        res.status(400).json({ message: "Email '" + req.body.email + "' schon vorhanden!" });
+                    } else if (res_duplikatPruefung[0].user_vorname == req.body.vorname){
+                        console.log("Vorname already taken!")
+                        res.status(400).json({ message: "Vorname '" + req.body.vorname + "' schon vorhanden!" });
+                    }
+                } else {
+                    console.error("Client sent no correct data!")
+                    res.status(400).json({ message: 'Client hat keine korrekten Daten gesendet!' });
+                }
+            }
+        }
+    });
+    }
+});
+
+
+//post-API for checking, if there is a user with the correct data, which was typed in on anmeldung.component, and if so, he/she will be logged in
+app.post('/api/anmeldung', (req, res) => {
+
+console.log("Client sent following mail adress: " + req.body.email);
+console.log("Escaped req.body.email: " + connection.escape(req.body.email))
+const email = connection.escape(req.body.email)
+var pw_correct = false;
+
+connection.query("SELECT `user_id`,`user_email`,`user_passwort` FROM `user` WHERE `user_email` = '" + email + "';", function (error, res_email, fields) {
+
+    if (error) {
+        console.error(error);
+        res.status(500).json(error);
+    } else {
+        if (res_email.length == 0) {
+            console.log("res_email.length = " + res_email.length)
+            console.log("No account found for sent email.")
+            res.status(400).json({ message: "Es konnte kein Account mit dieser E-Mail-Adresse gefunden werden!"});
+        }
+
+        else {
+            if (res_email.length > 0) {
+                console.log("res_email.length = " + res_email.length)
+                console.log("The entered mail was found in the database.")
+                console.log("Email in DB = " + res_email[0].user_email)
+
+               bycrypt.compare(req.body.passwort, res_email[0].passwort, function (err, compare_result){
+                    console.log("compare_result of password check = " + compare_result)
+                    pw_correct = compare_result;
+
+                    if (pw_correct == true) {
+                        const user = res_email[0];
+                        const token = jwt.sign(
+                            { id: user.user_id, email: user.user_email},
+                            secretKey,
+                            { expiresIn: '3h'}
+                        );
+
+                        res.cookie('jwt', token, {httpOnly: true, secure: true, sameSite:"strict"});
+                        res.status(200).json({token: token, message: "Login erfolgreich!"})
+                    }
+                    if (pw_correct == false) {
+                        res.status(400).json({ message: "Falsches Passwort oder falsche E-Mail!"})
+                    }
+                })
+            }
+        }
+    }
+});
+});
+
+//...
+
+//get-API to log out the user
+app.get('/api/abmeldung', function(req, res){
+    res.clearCookie('jwt', {maxAge:0});
+    res.json({ message: 'Ablmeldung erfolgreich.'});
+})
+
+//post-API for posting the input data from the erstellen.component into the database
+app.post('/api/erstellen', (req, res) => {
+
+    if (typeof req.body !== "undefined") {
+       
+        var eventtitel = req.body.eventtitel;
+        var veranstalter = req.body.veranstalter;
+        var typ = req.body.typ;
+        var kategorie = req.body.kategorie;
+        var adresse = req.body.adresse;
+        var stadt = req.body.stadt;
+        var bundesland = req.body.bundesland;
+        var plz = req.body.plz;
+        var land = req.body.land;
+        var startdatum = req.body.eventbeginn;
+        var enddatum = req.body.eventende;
+        var startzeit = req.body.startzeit;
+        var endzeit = req.body.endzeit;
+        
+        console.log("Client send database insert request with 'eventtitel':"); 
+
+        connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "', current_timestamp());", function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(500).json(error);
+            } else {
+                console.log('Success answer: ', results);
+                res.status(200).json(results);
+            }
+        });
+    }
+    else {
+        console.error("Client send no correct data!")
+        res.status(400).json({ message: 'This function requries a body with "title" and "description' });
+    }
 });
 
 
@@ -84,196 +257,6 @@ app.get('/api/teilnehmer', (req, res) => {
         }
     });
     });
-
-//post-API for posting the input from the registrieren.component into the database to register a new user
-app.post('/api/registrierung', (req, res) => {
-    if (typeof req.body !== "undefined" && typeof req.body.vorname !== "undefined" && typeof req.body.nachname !== "undefined" && typeof req.body.email !== "undefined" 
-    && typeof req.body.password !== "undefined") {
-        
-        //I think here must be checked, if the email-standard was typed in correctly...
-
-        var vorname = req.body.vorname;
-        var nachname = req.body.nachname;
-        var email = req.body.email;
-        var password = req.body.password;
-
-        //And here we think must be checked, if the password was typed in correctly...
-        //And here we think must be some kind of technology like bycrypt or jwt be implemented...
-    
-        console.log("Client send database insert request with 'eventtitel': ; veranstalter: ");
-        
-        connection.query("INSERT INTO `user` (`user_id`, `user_vorname`, `user_nachname`, `user_email`, `user_passwort`) VALUES (NULL, '" + vorname + "', '" + nachname + "', '" + email + "', '" + password + "');", function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(500).json(error);
-            } else {
-                console.log('Success answer: ', results);
-                res.status(200).json(results);
-            }
-        });
-    }
-    else {
-        console.error("Client send no correct data!")
-        res.status(400).json({ message: 'Alle Felder müssen korrekt ausgefüllt werden!' });
-    }
-});
-
-
-/*
-// Login-Route
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Überprüfung der Benutzerdaten in der Datenbank
-    const user = { id: 1, username: 'testuser' };
-    if (!user || password !== 'geheimes_password') {
-    return res.status(401).json({ message: 'Falscher Benutzername oder Passwort' });
-    }
-    // Erstellung und Signierung des JWT-Tokens
-    const token = jwt.sign({ sub: user.id, username: user.username }, jwtSecret);
-    // Speichern des Anmeldestatus in der MySQL-Sitzung
-    req.session.isLoggedIn = true;
-    req.session.userId = user.id;
-    // Setzen des JWT-Tokens als Cookie
-    res.cookie('token', token, { httpOnly: true });
-    // Rückgabe einer Bestätigung als JSON-Antwort
-    return res.json({ message: 'Anmeldung erfolgreich' });
-    });
-    
-// Geschützte Route
-app.get('/protected', (req, res) => {
-// Überprüfung des JWT-Tokens im Cookie
-const token = req.cookies.token;
-if (!token) {
-return res.status(401).json({ message: 'Kein Token bereitgestellt' });
-}
-let decodedToken;
-try {
-decodedToken = jwt.verify(token, jwtSecret);
-} catch (err) {
-return res.status(401).json({ message: 'Ungültiges Token' });
-}
-// Überprüfung des Anmeldestatus in der MySQL-Sitzung
-if (!req.session.isLoggedIn || req.session.userId !== decodedToken.sub) {
-return res.status(401).json({ message: 'Nicht authentifiziert' });
-}
-// Rückgabe der geschützten Daten als JSON-Antwort
-return res.json({ data: 'Diese Daten sind geschützt' });
-});
-
-// Logout-Route
-app.post('/logout', (req, res) => {
-// Löschen der Anmeldedaten aus der MySQL-Sitzung
-req.session.isLoggedIn = false;
-req.session.userId = null;
-// Löschen des JWT-Cookies
-res.clearCookie('token');
-// Rückgabe einer Bestätigung als JSON-Antwort
-return res.json({ message: 'Logout erfolgreich' });
-});
-*/
-
-
-//post-API for checking, if there is a user with the correct data, which was typed in on anmeldung.component, and if so, he/she will be logged in
-app.post('/api/anmeldung', (req, res) => {
-
-console.log("Client sent following mail adress: " + req.body.email);
-var pw_correct = false;
-
-connection.query("SELECT `user_id`,`user_email`,`user_passwort` FROM `user` WHERE `user_email` = '" + req.body.email + "';", function (error, res_email, fields) {
-
-    if (error) {
-        console.error(error);
-        res.status(500).json(error);
-    } else {
-        if (res_email.length == 0) {
-            console.log("res_email.length = " + res_email.length)
-            console.log("Kein Account zur Email gefunden.")
-            res.status(400).json({ message: "Es konnte kein Account mit dieser E-Mail-Adresse gefunden werden!"});
-        }
-
-        else {
-            if (res_email.length > 0) {
-                console.log("res_email.length = " + res_email.length)
-                console.log("Die eingegebene Mial wurde in der Datenbank gefunden.")
-                console.log("Email in DB = " + res_email[0].user_email)
-
-               /*  bycrypt.compare(req.body.passwort, res_email[0].passwort, function (err, compare_result){
-                    console.log("res_email[0].passwort = " + res_email[0].passwort)
-                    console.log("Eingegebenes Passwort = " + req.body.passwort)
-                    console.log("compare_result = " + compare_result)
-                    pw_correct = compare_result;
-
-                    if (pw_correct == true) {
-                        const user = res_email[0];
-                        const token = jwt.sign(
-                            { id: user.user_id, email: user.user_email},
-                            secretKey,
-                            { expiresIn: '3h'}
-                        );
-
-                        res.cookie('jwt', token, {httpOnly: true});
-                        res.status(200).json("Login erfolgreich!");
-                    }
-                    if (pw_correct == false) {
-                        res.status(400).json({ message: "Falsches Passwort oder falsche E-Mail!"})
-                    }
-                }) */
-                if (req.body.password == res_email[0].user_passwort) {
-                    res.status(200).json("Login erfolgreich!");
-                } else {
-                    res.status(400).json({ message: "Falsches Passwort oder falsche E-Mail!"})
-                }
-            }
-        }
-    }
-});
-});
-
-
-//post-API for posting a user which is participating on an certain event, after he/her clicked a button accept an event
-app.post('/api/erstellen', (req, res) => {
-
-    // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
-    // it will be added to the database with a query.
-    if (typeof req.body !== "undefined") {
-        // The content looks good, so move on
-        // Get the content to local variables:
-        var eventtitel = req.body.eventtitel;
-        var veranstalter = req.body.veranstalter;
-        var typ = req.body.typ;
-        var kategorie = req.body.kategorie;
-        var adresse = req.body.adresse;
-        var stadt = req.body.stadt;
-        var bundesland = req.body.bundesland;
-        var plz = req.body.plz;
-        var land = req.body.land;
-        var startdatum = req.body.eventbeginn;
-        var enddatum = req.body.eventende;
-        var startzeit = req.body.startzeit;
-        var endzeit = req.body.endzeit;
-        console.log("Client send database insert request with 'eventtitel':"); // <- log to server
-        // Actual executing the query. Please keep in mind that this is for learning and education.
-        // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "', current_timestamp());", function (error, results, fields) {
-            if (error) {
-                // we got an error - inform the client
-                console.error(error); // <- log error in server
-                res.status(500).json(error); // <- send to client
-            } else {
-                // Everything is fine with the query
-                console.log('Success answer: ', results); // <- log results in console
-                // INFO: Here can be some checks of modification of the result
-                res.status(200).json(results); // <- send it to client
-            }
-        });
-    }
-    else {
-        // There is nobody with a title nor description
-        console.error("Client send no correct data!")
-        // Set HTTP Status -> 400 is client error -> and send message
-        res.status(400).json({ message: 'This function requries a body with "title" and "description' });
-    }
-});
 
 
 //delete-API to delete a user from an event, after he/her clicked a button to cancel his/her participation
@@ -299,8 +282,8 @@ app.delete('/database/:id', (req, res) => {
 });
 
 
-//post-API for posting the input data from the erstellen.component into the database
-app.post('/api/erstellen', (req, res) => {
+//post-API for posting a user which is participating on an certain event, after he/her clicked a button accept an event
+app.post('/api/participation', (req, res) => {
 
     if (typeof req.body !== "undefined" && typeof req.body.eventtitel !== "undefined" && typeof req.body.veranstalter !== "undefined" && typeof req.body.typ !== "undefined" 
     && typeof req.body.kategorie !== "undefined" && typeof req.body.adresse !== "undefined" && typeof req.body.stadt !== "undefined" && typeof req.body.bundesland !== "undefined"
@@ -364,6 +347,9 @@ app.delete('/database/:id', (req, res) => {
 
 //Optional: Gooogle Maps API for showing, where the event is going to take place
 //Here we have to admit, that this was very difficult for us to implement...
+//***API-PART ENDS***/
+
+
 
 // Start the actual server
 app.listen(PORT, HOST);
