@@ -23,8 +23,12 @@
       <br>
       <button mat-raised-button [disabled]="!AnmeldungForm.valid" type="submit">Log In</button>
     </div>
+
+    <div class="example-container">
+      <p>Noch kein Konto?</p>
+      <button mat-raised-button routerLink="/registrierung">Registrieren</button>
+    </div >
 </div>
 </form>
-<p>Noch kein Konto?</p>
-<button routerLink="/registrierung">Registrieren</button>
+
 <app-footer></app-footer>

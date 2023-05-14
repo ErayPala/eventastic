@@ -1,22 +1,22 @@
 <header>
   <div>
     <img routerLink="/" class="logo" src="assets/img/Logo.jpg">
-    <section *ngIf="!lg.angemeldet">
+    <section>
       <div class="example-button-row">
-        <button *ngIf="lg.angemeldet" routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
+        <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
         <button routerLink="/anmeldung" mat-raised-button color="warn">Anmelden</button>
         <button routerLink="/registrierung" mat-raised-button color="warn">Registrieren</button>
       </div>
     </section>
 
-    <section *ngIf="lg.angemeldet">
+    <section>
       <div class="example-button-row">
         <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
         <button color="warn" mat-button [matMenuTriggerFor]="menu">Platzhalter</button>
 
         <mat-menu #menu="matMenu">
           <button routerLink="/account" mat-menu-item>Account</button>
-          <button routerLink="/homepage" (click)="lg.angemeldet=false" mat-menu-item>Auslogen</button>
+          <button routerLink="/homepage" mat-menu-item>Auslogen</button>
         </mat-menu>
       </div>
     </section>

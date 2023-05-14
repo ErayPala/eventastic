@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-header',
@@ -10,5 +9,5 @@ import { LoginService } from '../login.service';
 
 export class HeaderComponent {
 
-    constructor(public lg: LoginService) { }
+    constructor() { }
 }
