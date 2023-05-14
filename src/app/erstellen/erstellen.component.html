@@ -1,3 +1,20 @@
+<header>
+    <div>
+      <img routerLink="/homepage" class="logo" src="assets/img/Logo.jpg">
+        <section>
+            <div class="example-button-row">
+              <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
+              <button color="warn" mat-button [matMenuTriggerFor]="menu">Account/Ausloggen</button>
+      
+              <mat-menu #menu="matMenu">
+                <button routerLink="/account" mat-menu-item>Account</button>
+                <button (click)="abmeldung()" mat-menu-item>Ausloggen</button>
+              </mat-menu>
+            </div>
+          </section>
+    </div>
+</header>
+
 <form class="erstellung-formular" [formGroup]="ErstellungForm" (submit)="submit()">
 
     <div class="erstellungsmaske">

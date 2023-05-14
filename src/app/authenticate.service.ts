@@ -19,7 +19,7 @@ export class AuthenticateService {
       this.cookieService.delete('jwt');
 
       setTimeout(() => {
-        this.router.navigate(['/homepage']);
+        this.router.navigate(['/']);
       }, 100);
     });
   }

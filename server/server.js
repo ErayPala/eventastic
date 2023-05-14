@@ -7,12 +7,15 @@ const express = require('express');
 const mysql = require('mysql');
 // Initialization of cors
 const cors = require('cors');
-// Initiialization of jwt and cookie-parser for authentication purpose
+// Initiialization of jwt
 const jwt = require('jsonwebtoken');
+
+//Here could be the possibility to implement a cookie-parser
 // const cookieParser = require('cookie-parser');
-// Initialization of bycrypt to hash passwords, if needed (is not implemented)
+
+// Initialization of bycrypt to hash passwords, if needed (is not implemented unfortunately)
 // const bycrypt = require('bcryptjs');
-const saltRounds = 10;
+// const saltRounds = 10;
 
 
 // Database connection info - used from environment variables
@@ -67,7 +70,7 @@ app.use(cors(corsOptions));
 //Initialization a JWT secret key
 const secretKey = 'secret-key';
 
-//Feature to parse cookies (JWT)
+//Feature to parse cookies (JWT) (is not implemented)
 // app.use(cookieParser);
 
 
@@ -75,7 +78,7 @@ const secretKey = 'secret-key';
 // get-API to get all events from the database and sending it to the client to display it
 app.get('/api/getEvents', (req, res) => {
 
-    connection.query("SELECT * FROM `events` LIMIT 1", function (error, results, fields) {
+    connection.query("SELECT * FROM `events`", function (error, results, fields) {
 
         if (error) {
             console.error(error);
@@ -93,15 +96,15 @@ app.post('/api/registrierung', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.vorname !== "undefined" && typeof req.body.nachname !== "undefined" && typeof req.body.email !== "undefined" 
     && typeof req.body.password !== "undefined") {
         
-        //I think here must be checked, if the email-standard was typed in correctly...
+        //...A check for the correct e-mail standard should actually have been implemented here...
 
         var vorname = req.body.vorname;
         var nachname = req.body.nachname;
         var email = req.body.email;
         var password = req.body.password;
 
-        //And here we think must be checked, if the password was typed in correctly...
-        //And here we think must be some kind of technology like bycrypt or jwt be implemented...
+        //And here we think should have been checked, if the password was typed in correctly...
+        //And here we think should have been bycrypt be implemented...
     
         console.log("Client send database insert request with 'eventtitel': ; veranstalter: ");
         
@@ -205,7 +208,7 @@ app.post('/api/erstellen', (req, res) => {
 });
 
 
-//get-API to see, which user is participating on the event
+//get-API to see, which user is participating on the event (is not implemented unfortunately...)
 app.get('/api/teilnehmer', (req, res) => {
 
     connection.query("SELECT `teilnehmer_id`,`user_id`,`event_id`, FROM `eventmanagement`", function (error, results, fields) {
@@ -221,7 +224,7 @@ app.get('/api/teilnehmer', (req, res) => {
     });
 
 
-//delete-API to delete a user from an event, after he/her clicked a button to cancel his/her participation
+//delete-API to delete a user from an event, after he/her clicked a button to cancel his/her participation (is not implemented unfortunately...)
 app.delete('/api/teilnehmerLöschen', (req, res) => {
 
     let id = req.params.id;
@@ -239,43 +242,9 @@ app.delete('/api/teilnehmerLöschen', (req, res) => {
 });
 
 
-//post-API for posting a user which is participating on an certain event, after he/her clicked a button accept an event
+//post-API for posting a user which is participating on an certain event, after he/her clicked a button to accept an event (is not implemented unfortunately...)
 app.post('/api/teilnahme', (req, res) => {
-
-    if (typeof req.body !== "undefined" && typeof req.body.eventtitel !== "undefined" && typeof req.body.veranstalter !== "undefined" && typeof req.body.typ !== "undefined" 
-    && typeof req.body.kategorie !== "undefined" && typeof req.body.adresse !== "undefined" && typeof req.body.stadt !== "undefined" && typeof req.body.bundesland !== "undefined"
-    && typeof req.body.plz !== "undefined" && typeof req.body.land !== "undefined" && typeof req.body.startdatum !== "undefined" && typeof req.body.enddatum !== "undefined" 
-    && typeof req.body.startzeit !== "undefined" && typeof req.body.endzeit !== "undefined") {
-        
-        var eventtitel = req.body.eventtitel;
-        var veranstalter = req.body.veranstalter;
-        var typ = req.body.typ;
-        var kategorie = req.body.kategorie;
-        var adresse = req.body.adresse;
-        var stadt = req.body.stadt;
-        var bundesland = req.body.bundesland;
-        var plz = req.body.plz;
-        var land = req.body.land;
-        var startdatum = req.body.eventbeginn;
-        var enddatum = req.body.eventende;
-        var startzeit = req.body.startzeit;
-        var endzeit = req.body.uhrzeit;
-        console.log("Client send database insert request with 'eventtitel': " + eventtitel + " ; veranstalter: " + veranstalter);
-        
-        connection.query("INSERT INTO `events` (`event_id`, `event_titel`, `event_veranstalter`, `event_typ`, `event_kategorie`, `event_adresse`, `event_stadt`,`event_bundesland`, `event_plz`, `event_land`, `event_startdatum`, `event_enddatum`, `event_startzeit`, `event_endzeit`, `event_erstellt`) VALUES (NULL, '" + eventtitel + "', '" + veranstalter + "', '" + typ + "', '" + kategorie + "', '" + adresse + "', '" + stadt + "', '" + bundesland + "', '" + plz + "', '" + land + "', '" + startdatum + "', '" + enddatum + "', '" + startzeit + "', '" + endzeit + "' current_timestamp());", function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(500).json(error);
-            } else {
-                console.log('Success answer: ', results);
-                res.status(200).json(results);
-            }
-        });
-    }
-    else {
-        console.error("Client send no correct data!")
-        res.status(400).json({ message: 'This function requries a body with "title" and "description' });
-    }
+//...
 });
 
 

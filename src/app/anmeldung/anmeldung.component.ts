@@ -28,7 +28,6 @@ export class AnmeldungComponent implements OnInit {
       });
   }
 
-  //here are still things missing (token, jwt)
   login(): void {
 
     const headers = { 'content-type': 'application/json'}
@@ -36,7 +35,7 @@ export class AnmeldungComponent implements OnInit {
     
       this.http.post('http://localhost:8080/api/anmeldung', body, { 'headers': headers }).subscribe((response: any) => {
       this.CookieService.set('jwt', response.token, {secure: false});
-      this.router.navigate(['/']);
+      this.router.navigate(['/homepage']);
     },
      (error) => {
       console.log(error);

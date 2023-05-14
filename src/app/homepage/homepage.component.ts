@@ -12,12 +12,13 @@ export class HomepageComponent implements OnInit {
 
     constructor(private http: HttpClient, private router: Router) { }
 
-    test: any = {};
+    Eventdaten = new Array<any>();
 
-    ngOnInit() {
-        this.http.get<any[]>('http://localhost:8080/api/getEvents').subscribe(data => {
-            this.test = data;
-            console.log(data)
-        })
-    }
+  ngOnInit() {
+      this.http.get<any[]>('http://localhost:8080/api/getEvents').subscribe(data => {
+          this.Eventdaten = data;
+          console.log(data)
+      })
+  }
+
 }

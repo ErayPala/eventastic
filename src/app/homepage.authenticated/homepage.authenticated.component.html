@@ -1,13 +1,14 @@
 <header>
     <div>
+      <img routerLink="/homepage" class="logo" src="assets/img/Logo.jpg">
         <section>
             <div class="example-button-row">
               <button routerLink="/erstellen" mat-raised-button color="warn">Event erstellen</button>
-              <button color="warn" mat-button [matMenuTriggerFor]="menu">Platzhalter</button>
+              <button color="warn" mat-button [matMenuTriggerFor]="menu">Account/Ausloggen</button>
       
               <mat-menu #menu="matMenu">
                 <button routerLink="/account" mat-menu-item>Account</button>
-                <button routerLink="/homepage" mat-menu-item>Ausloggen</button>
+                <button (click)="abmeldung()" mat-menu-item>Ausloggen</button>
               </mat-menu>
             </div>
           </section>
@@ -29,21 +30,34 @@
   
 </div>
 
-<div class="event">
-    <h2>{{ test[0]['event_titel'] }}</h2>
-    <p>Der Veranstalter ist: {{ test[0]['event_veranstalter'] }}, die Kategorie: {{ test[0]['event_kategorie'] }}</p>
-    <button>Anmelden</button>
-  </div>
-  
-  <div class="event">
-    <h2>Veranstaltung 2</h2>
-    <p>Beschreibung der Veranstaltung 2</p>
-    <button>Anmelden</button>
-  </div>
-  
-  <div class="event">
-    <h2>Veranstaltung 3</h2>
-    <p>Beschreibung der Veranstaltung 3</p>
+  <div class="event" *ngFor="let i of Eventdaten">
+
+   <h2>{{ i.event_titel}}</h2>
+   <p>
+    Veranstalter: {{ i.event_veranstalter}}
+    <br>
+    Typ des Events: {{ i.event_typ}}
+    <br>
+    Kategorie des Events: {{ i.event_kategorie}}
+    <br>
+    Adresse: {{ i.event_adresse}}
+    <br>
+    Stadt: {{ i.event_stadt}}
+    <br>
+    Bundesland: {{ i.event_bundesland}}
+    <br>
+    Postleitzahl: {{ i.event_plz}}
+    <br>
+    Land: {{ i.event_land}}
+    <br>
+    Beginndatum: {{ i.event_startdatum}}
+    <br>
+    Enddatum: {{ i.event_enddatum}}
+    <br>
+    Startzeit: {{ i.event_startzeit}}
+    <br>
+    Endzeit: {{ i.event_endzeit}}
+   </p>
     <button>Anmelden</button>
   </div>
 

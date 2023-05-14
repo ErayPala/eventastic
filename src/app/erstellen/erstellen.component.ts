@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { AuthenticateService } from '../authenticate.service';
 
 @Component({
     selector: 'app-erstellen',
@@ -15,7 +16,7 @@ export class ErstellenComponent implements OnInit {
 
     ErstellungForm: FormGroup;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router, private AuthenticateService: AuthenticateService) { }
 
     serverAntwort: any
 
@@ -59,4 +60,8 @@ export class ErstellenComponent implements OnInit {
             },
         );
     }
+
+    abmeldung(): void {
+        this.AuthenticateService.abmeldung();
+      }
 }

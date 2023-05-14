@@ -32,3 +32,40 @@
   padding: 0px 10px;
   height: 600px;
 }
+
+header {
+  font-family: 'Ubuntu', sans-serif;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height: 50px;
+  overflow: hidden;
+
+  .logo {
+      height: 30px;
+      margin-left: 45px;
+      margin-top: 10px;
+
+      cursor: pointer;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.001);
+        }
+    }
+
+  //Für die "Warm" Buttons
+
+    section {
+      display: table;
+      float: right;
+    }
+
+    .example-button-row {
+      display: table-cell;
+      max-width: 600px;
+      margin: 8px 8px 8px 0;
+    }
+
+    .example-button-row .mat-mdc-button-base {
+      margin: 8px 8px 8px 0;
+    }
+}

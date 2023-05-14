@@ -11,9 +11,9 @@ RUN npm install -g nodemon
 
 COPY . .
 
-RUN npm install bycrypt.js
-
 RUN npm install express
+
+RUN npm install -g @angular/cli
 
 RUN ng serve
 

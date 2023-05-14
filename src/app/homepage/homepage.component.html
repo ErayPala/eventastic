@@ -28,22 +28,35 @@
 </div>
 
 
-<div class="event">
-    <h2>{{ test[0]['event_titel'] }}</h2>
-    <p>Der Veranstalter ist: {{ test[0]['event_veranstalter'] }}, die Kategorie: {{ test[0]['event_kategorie'] }}</p>
-    <button>Anmelden</button>
-  </div>
-  
-  <div class="event">
-    <h2>Veranstaltung 2</h2>
-    <p>Beschreibung der Veranstaltung 2</p>
-    <button>Anmelden</button>
-  </div>
-  
-  <div class="event">
-    <h2>Veranstaltung 3</h2>
-    <p>Beschreibung der Veranstaltung 3</p>
-    <button>Anmelden</button>
-  </div>
+<div class="event" *ngFor="let i of Eventdaten">
+
+  <h2>{{ i.event_titel}}</h2>
+  <p>
+   Veranstalter: {{ i.event_veranstalter}}
+   <br>
+   Typ des Events: {{ i.event_typ}}
+   <br>
+   Kategorie des Events: {{ i.event_kategorie}}
+   <br>
+   Adresse: {{ i.event_adresse}}
+   <br>
+   Stadt: {{ i.event_stadt}}
+   <br>
+   Bundesland: {{ i.event_bundesland}}
+   <br>
+   Postleitzahl: {{ i.event_plz}}
+   <br>
+   Land: {{ i.event_land}}
+   <br>
+   Beginndatum: {{ i.event_startdatum}}
+   <br>
+   Enddatum: {{ i.event_enddatum}}
+   <br>
+   Startzeit: {{ i.event_startzeit}}
+   <br>
+   Endzeit: {{ i.event_endzeit}}
+  </p>
+   <button routerLink="/anmeldung">Anmelden</button>
+ </div>
 
 <app-footer></app-footer>
