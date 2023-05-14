@@ -30,8 +30,7 @@ var dbInfo = {
 var connection = mysql.createPool(dbInfo);
 console.log("Conecting to database...");
 
-/* database connection check, from the lecture, not urgently needed here
-// Check the connection
+// database connection check, from the lecture, not urgently needed here
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
     // check the solution - should be 2
@@ -44,7 +43,6 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         process.exit(5); // <- exit application with error code e.g. 5
     }
 });
-*/
 
 // Constants for server connection
 const PORT = process.env.PORT || 8080;
@@ -127,7 +125,6 @@ app.post('/api/registrierung', (req, res) => {
 app.post('/api/anmeldung', (req, res) => {
 
     console.log("Client sent following mail adress: " + req.body.email);
-    var pw_correct = false;
     
     connection.query("SELECT `user_id`,`user_email`,`user_passwort` FROM `user` WHERE `user_email` = '" + req.body.email + "';", function (error, res_email, fields) {
     
@@ -221,7 +218,7 @@ app.get('/api/teilnehmer', (req, res) => {
             res.status(200).json(results);
         }
     });
-    });
+});
 
 
 //delete-API to delete a user from an event, after he/her clicked a button to cancel his/her participation (is not implemented unfortunately...)
@@ -280,12 +277,3 @@ console.log(`Running on http://${HOST}:${PORT}`);
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
-
-
-
-
-
-
-
-
-

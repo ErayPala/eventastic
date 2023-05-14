@@ -42,17 +42,15 @@ export class ErstellenComponent implements OnInit {
 
     submit() {
 
-        console.log('Submit Funzt')
-
         const headers = { 'content-type': 'application/json' }
         const body = JSON.stringify(this.ErstellungForm.getRawValue());
-        // const body = JSON.stringify({message: "Digga"});
+    
         console.log(this.ErstellungForm);
         console.log(body);
         this.http.post('http://localhost:8080/api/erstellen', body, { headers: headers }).subscribe((response) => {
             console.log(response);
             this.serverAntwort = response;
-            // this.router.navigate(['/erstellen'], {state: {serverAntwort: this.serverAntwort}});
+            this.router.navigate(['/homepage']);
         },
             (error) => {
                 console.log(error);

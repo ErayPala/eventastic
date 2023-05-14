@@ -6,16 +6,10 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
-# Only for dev: Nodemon:
-RUN npm install -g nodemon
 
 COPY . .
 
 RUN npm install express
-
-RUN npm install -g @angular/cli
-
-RUN ng serve
 
 EXPOSE 8080
 

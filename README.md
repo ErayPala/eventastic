@@ -52,11 +52,7 @@ Konto Seite:
 
 Dieses Projekt befasst sich im Rahmen der "Verteilte Systeme" Vorlesung, mit einer Eventmanagement Web-Applikation. Für die Entwicklung der Web-Applikation wurde das Angular Framework genutzt.
 
-GitHub-Repository: https://github.com/ErayPala/Verteilte-Systeme
-
 Autoren: Marco Kröker, Elias Hoh, Eray Pala
-
-(Diese README Datei ist ein Muster und wird überarbeitet.)
 
 #-----------------------------------------------------------------
 
